@@ -2,13 +2,11 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
-      <div class="title-container">
-        <h3 class="title">Login Form</h3>
-      </div>
+      <el-avatar class="login-logo" :size="95" src="http://likede2-admin.itheima.net/img/logo.595745bd.png" />
 
       <el-form-item prop="username">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="souji" />
         </span>
         <el-input
           ref="username"
@@ -36,17 +34,32 @@
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
+      </el-form-item>
+      <el-form-item prop="Captcha">
+        <el-row class="row-bg">
+          <el-col class="Captcha-input" :span="17">
+            <span class="svg-container">
+              <svg-icon icon-class="shield" />
+            </span>
+            <el-input
+              ref="Captcha"
+              v-model="loginForm.Captcha"
+              placeholder="Captcha"
+              name="Captcha"
+              type="text"
+              tabindex="1"
+              auto-complete="on"
+            /></el-col>
+          <el-col class="Captcha-image" :span="7">
+            <el-image
+              style="width: 130px; height:50px"
+              src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+              :fit="fit"
+            /></el-col>
+        </el-row>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
     </el-form>
   </div>
@@ -75,11 +88,13 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '111111',
+        Captcha: 'fghj'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        Captcha: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
       passwordType: 'password',
@@ -129,9 +144,8 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
-$light_gray:#fff;
-$cursor: #fff;
+$bg:url(~@/assets/login-imges/background.png) no-repeat;
+$cursor: #e2e2e2;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -152,7 +166,6 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
       height: 47px;
       caret-color: $cursor;
 
@@ -162,76 +175,67 @@ $cursor: #fff;
       }
     }
   }
-
+// .el-form-item__content{
+// line-height: 52px;
+// }
   .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
+    width: 100%;
+    height: 52px;
+    margin-bottom: 24px;
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
+$bg:url(~@/assets/login-imges/background.png) no-repeat;
 $dark_gray:#889aa4;
 $light_gray:#eee;
-
+$white: #fff;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background: $bg ;
+  background-size:cover;
   overflow: hidden;
 
   .login-form {
-    position: relative;
-    width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
+    position: absolute;
+    width: 518px;
+    height: 388px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 76px 35px 0;
+    background: $white;
+    border-radius: 10px;
   }
 
   .svg-container {
     padding: 6px 5px 6px 15px;
-    color: $dark_gray;
+    color: #889aa4;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
   }
+.login-logo{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background:none;
+}
 
-  .title-container {
-    position: relative;
+.row-bg{
+  height: 52px;
+  display: flex;
 
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
+  .Captcha-input{
   }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
+  .Captcha-image{
   }
+}
 }
 </style>

@@ -47,11 +47,12 @@ export default {
 
 <style scoped>
 .svg-icon {
-  width: 1em;
-  height: 1em;
+  width: 18px;
+  height: 18px;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+  color: #889aa4;
 }
 
 .svg-external-icon {
