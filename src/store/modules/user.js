@@ -13,10 +13,9 @@ export default {
   },
   actions: {
     async gitToken({ commit }, payLoad) {
-      const { data } = await login(payLoad)
-      console.log(data)
-      if (data.success) commit('setToken', data.token)
-      return data
+      const data = await login(payLoad)
+      console.log(1, data)
+      commit('setToken', data.token)
     }
   },
   getters: {

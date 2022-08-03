@@ -1,11 +1,11 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
+    <div :class="{'fixed-header':fixedHeader}">
+      <navbar />
+    </div>
     <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
-      </div>
+      <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+      <sidebar class="sidebar-container" />
       <app-main />
     </div>
   </div>
@@ -18,8 +18,8 @@ import ResizeMixin from './mixin/ResizeHandler'
 export default {
   name: 'Layout',
   components: {
-    Navbar,
-    Sidebar,
+    Navbar, // 表头
+    Sidebar, // 侧边栏
     AppMain
   },
   mixins: [ResizeMixin],

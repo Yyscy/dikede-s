@@ -57,7 +57,9 @@
             <el-image
               style="width: 130px; height:50px"
               :src="imgUrl"
-            /></el-col>
+              lazy
+            />
+          </el-col>
         </el-row>
       </el-form-item>
 
@@ -109,7 +111,8 @@ export default {
       },
       loading: false, // 加载
       passwordType: 'password', // 密码输入框格式test
-      imgUrl: '' // 验证图片
+      imgUrl: '', // 验证图片
+      throttle: 'true' // 节流
     }
   },
   watch: {
@@ -121,40 +124,38 @@ export default {
   methods: {
     showPwd() {
     },
+    // 登录
     async handleLogin() {
-      try {
-        this.loading = true
-        await this.$refs.loginForm.validate()
-        this.$store.dispatch('user/gitToken', this.loginForm).then((data) => {
+      if (this.throttle) {
+        try {
+          this.loading = true
+          await this.$refs.loginForm.validate()
+          await this.$store.dispatch('user/gitToken', this.loginForm)
+          console.log(1)
+          this.$router.push('/')
+        } catch (e) {
+          //
+        } finally {
           this.loading = false
-          if (data.success) {
-            this.$router.push('/')
-          } else {
-            this.$message({
-              message: data.msg,
-              center: true,
-              duration: 3000
-            })
-          }
-        })
-      } catch (e) {
-        this.loading = false
-        console.log(e)
+        }
       }
     },
     // 验证码
     async FlushCik() {
-      const len = 32
-      const chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-      const maxPos = chars.length
-      let character = ''
-      for (let i = 0; i < len; i++) {
-        character += chars.charAt(Math.floor(Math.random() * maxPos))
-      }
-      try {
-        this.loginForm.clientToken = character
-        const res = await imageCode(character)
-        this.imgUrl =
+      if (this.throttle) {
+        this.throttle = false
+        console.log(1)
+        const len = 32
+        const chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+        const maxPos = chars.length
+        let character = ''
+        for (let i = 0; i < len; i++) {
+          character += chars.charAt(Math.floor(Math.random() * maxPos))
+        }
+        try {
+          this.loginForm.clientToken = character
+          const res = await imageCode(character)
+          this.imgUrl =
           'data:image/png;base64,' +
           btoa(
             new Uint8Array(res.data).reduce(
@@ -162,10 +163,20 @@ export default {
               ''
             )
           )
-      } catch (e) {
+          this.throttle = true
+        } catch (e) {
+          this.loading = false
+          this.$message({
+            message: e,
+            center: true,
+            duration: 3000
+          })
+          this.throttle = true
         // 失败
+        }
       }
     }
+
   }
 }
 </script>
