@@ -1,11 +1,14 @@
 <template>
   <div :class="classObj" class="app-wrapper">
+    <!-- 头部 -->
     <div :class="{'fixed-header':fixedHeader}">
       <navbar />
     </div>
+    <!-- min主体 -->
     <div class="main-container">
-      <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+      <!-- 左侧边栏 -->
       <sidebar class="sidebar-container" />
+      <!-- 显示窗口 -->
       <app-main />
     </div>
   </div>
@@ -35,10 +38,9 @@ export default {
     },
     classObj() {
       return {
-        hideSidebar: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
+        hideSidebar: this.sidebar.opened,
+        openSidebar: !this.sidebar.opened,
+        withoutAnimation: this.sidebar.withoutAnimation
       }
     }
   },
@@ -59,10 +61,6 @@ export default {
     position: relative;
     height: 100%;
     width: 100%;
-    &.mobile.openSidebar{
-      position: fixed;
-      top: 0;
-    }
   }
   .drawer-bg {
     background: #000;
@@ -81,13 +79,5 @@ export default {
     z-index: 9;
     width: calc(100% - #{$sideBarWidth});
     transition: width 0.28s;
-  }
-
-  .hideSidebar .fixed-header {
-    width: calc(100% - 54px)
-  }
-
-  .mobile .fixed-header {
-    width: 100%;
   }
 </style>

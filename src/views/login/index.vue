@@ -131,9 +131,9 @@ export default {
           this.loading = true
           await this.$refs.loginForm.validate()
           await this.$store.dispatch('user/gitToken', this.loginForm)
-          console.log(1)
           this.$router.push('/')
         } catch (e) {
+          console.dir(e)
           //
         } finally {
           this.loading = false
@@ -144,7 +144,6 @@ export default {
     async FlushCik() {
       if (this.throttle) {
         this.throttle = false
-        console.log(1)
         const len = 32
         const chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
         const maxPos = chars.length

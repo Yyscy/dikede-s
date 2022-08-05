@@ -1,13 +1,12 @@
 <template>
   <div class="navbar">
-    <div class="left">
+    <div class="left" @click="logout">
       <img width="88" class="" src="@/assets/login-imges/headerlogo.png">
     </div>
-
     <div class="right">
-      <div class="right-users">
-        <img src="@/assets/login-imges/logo.png" class="user-avatar">
-        <span class="right-text">和hi衣服hi机</span>
+      <div class="right-users" @click.native="logout">
+        <img v-imgError="defaultImg" :src="image" class="user-avatar">
+        <span class="right-text">{{ name }}</span>
       </div>
       <div class="secede" @click="logout">
         <span>退出</span>
@@ -18,19 +17,26 @@
 </template>
 
 <script>
-// import { mapGetters } from "vuex";
-
+import { mapGetters } from 'vuex'
 export default {
-  // components: {},
-  // computed: {
-  //   ...mapGetters(["sidebar", "avatar"]),
-  // },
-  // methods: {
-  //   async logout() {
-  //     await this.$store.dispatch("user/logout");
-  //     this.$router.push(`/login?redirect=${this.$route.fullPath}`);
-  //   },
-  // },
+  data() {
+    return {
+      defaultImg: 'http://destiny001.gitee.io/image/monkey_02.jpg'
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'image',
+      'name'
+    ])
+  },
+  methods: {
+    async logout() {
+      console.log(1)
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login`)
+    }
+  }
 }
 </script>
 
@@ -56,12 +62,10 @@ export default {
   .right {
     float: right;
     height: 100%;
-    width: 240px;
     color: #fff;
     margin-right: 24px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     .user-avatar {
       // cursor: pointer;
       width: 35px;
@@ -71,15 +75,18 @@ export default {
     }
     .right-users {
       display: flex;
+      padding-right: 20px;
       align-items: center;
       .right-text {
         margin-left: 13px;
         line-height: 60px;
       }
     }
-
     .el-icon-caret-bottom {
       font-size: 16px;
+    }
+    .secede{
+      line-height: 60px;
     }
   }
 }

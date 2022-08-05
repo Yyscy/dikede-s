@@ -1,21 +1,42 @@
-import { login } from '@/api/user'
-import { setToken, getToken } from '@/utils/auth'
+import { login, userInfo } from '@/api/user'
+import { setTokentime } from '@/utils/auth'
+// import router from '@/router'
 export default {
   namespaced: true,
   state: {
-    token: getToken()
+    token: '',
+    loginInfo: {},
+    userInfo: {}
   },
   mutations: {
-    setToken(atate, payLoad) {
-      atate.token = payLoad
-      setToken(payLoad)
+    // 获取token
+    setToken(state, payLoad) {
+      state.token = payLoad.token
+      state.loginInfo = payLoad
+    },
+    // 个人信息
+    setuserInfo(state, payLoad) {
+      state.userInfo = payLoad
     }
   },
   actions: {
+    // 获取token
     async gitToken({ commit }, payLoad) {
       const data = await login(payLoad)
-      console.log(1, data)
-      commit('setToken', data.token)
+      commit('setToken', data)
+      setTokentime()
+    },
+    // 个人信息
+    async gituserInfo({ commit }, payLoad) {
+      console.log(payLoad)
+      const data = await userInfo(payLoad)
+      console.log(data)
+      commit('setuserInfo', data)
+    },
+    // 退出登录
+    logout({ commit }) {
+      commit('setToken', '')
+      commit('setuserInfo', {})
     }
   },
   getters: {

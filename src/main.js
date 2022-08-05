@@ -15,6 +15,8 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 自定义指令
+import * as directivces from '@/directivces'
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -34,6 +36,18 @@ Vue.use(ElementUI, { locale })
 // Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+
+// 循环添加自定义指令
+for (const key in directivces) {
+  Vue.directive(key, directivces[key])
+}
+// Vue.directive('imgError', {
+//   inserted: function(element, { value }) {
+//     element.onerror = function() {
+//       element.src = value
+//     }
+//   }
+// })
 
 new Vue({
   el: '#app',
