@@ -153,11 +153,11 @@ export default {
         }
         try {
           this.loginForm.clientToken = character
-          const res = await imageCode(character)
+          const data = await imageCode(character)
           this.imgUrl =
           'data:image/png;base64,' +
           btoa(
-            new Uint8Array(res.data).reduce(
+            new Uint8Array(data).reduce(
               (data, byte) => data + String.fromCharCode(byte),
               ''
             )

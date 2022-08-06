@@ -5,7 +5,6 @@ router.beforeEach((to, from, next) => {
   const { token } = store?.getters
   if (token) {
     const { userId } = store?.getters
-    console.log(store?.getters)
     store.dispatch('user/gituserInfo', userId)
     // 登录
     if (to.path === '/login') {

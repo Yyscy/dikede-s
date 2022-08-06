@@ -28,9 +28,7 @@ export default {
     },
     // 个人信息
     async gituserInfo({ commit }, payLoad) {
-      console.log(payLoad)
       const data = await userInfo(payLoad)
-      console.log(data)
       commit('setuserInfo', data)
     },
     // 退出登录
